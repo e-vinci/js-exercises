@@ -75,7 +75,7 @@ const linesInput = document.getElementById("lines");
 const columnsInput = document.getElementById("columns");
 const startStringInput = document.getElementById("startString");
 
-btnCreateElement.addEventListener("submit", function (e) {
+btnCreateElement.addEventListener("click", function (e) {
   // check the validation constraint (not necessary if we deal with a "submit" event on the form)
   if (!myForm.checkValidity()) return;
   console.log("submit from ", e.target.id, this.id);
