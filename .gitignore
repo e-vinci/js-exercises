@@ -17,3 +17,4 @@ fiche*
 !fiche-02
 !fiche-03
 data/*.json
+!fiche-04
