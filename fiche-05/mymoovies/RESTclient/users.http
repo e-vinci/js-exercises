@@ -1,0 +1,54 @@
+@baseUrl = http://localhost:3000
+### Try to view all users when not authenticated
+GET {{baseUrl}}/users
+### Login the manager with a request variable (ensure that you have "registered" this user first via auths.http)
+# @name manager
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+### Try to view all users with manager (who does not have yet the admin role)
+GET {{baseUrl}}/users
+Authorization: {{manager.response.body.token}}
+
+
+### Try to update the manager username to supermanager
+PUT {{baseUrl}}/users/manager
+Content-Type: application/json
+Authorization: {{manager.response.body.token}}
+
+{
+    "username":"supermanager",
+    "role":"admin"
+}
+
+### Update the manager role to admin
+PUT {{baseUrl}}/users/manager
+Content-Type: application/json
+Authorization: {{manager.response.body.token}}
+
+{
+    "role":"admin"
+}
+
+
+### View all users with manager having the admin role
+GET {{baseUrl}}/users
+Authorization: {{manager.response.body.token}}
+
+### Login the dev with a request variable (ensure that you have "registered" this user first via auths.http)
+# @name dev
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"dev",
+    "password":"dev"
+}
+### Try to view all users with dev having the regular role
+GET {{baseUrl}}/users
+Authorization: {{dev.response.body.token}}

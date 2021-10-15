@@ -1,16 +1,19 @@
 const jwt = require("jsonwebtoken");
 const { parse, serialize } = require("../utils/json");
 //var escape = require("escape-html");
+const bcrypt = require('bcrypt');
 const jwtSecret = "ilovemypizza!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const jsonDbPath = __dirname + "/../data/users.json";
 
+const saltRounds = 10;
+
 // Default data
 const defaultItems = [
   {
     username: "admin",
-    password: "admin",
+    password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",//"admin",
   },
 ];
 
@@ -70,13 +73,16 @@ class Users {
    * @returns {object} the item that was created (with id)
    */
 
-  addOne(body) {
+  async addOne(body) {
     const items = parse(this.jsonDbPath, this.defaultItems);
-
+    // hash the password (async call)
+    const hashedPassword = await bcrypt.hash(body.password, saltRounds);
     // add new item to the menu
+
     const newitem = {
       username: body.username,
-      password: body.password,
+      role: "regular",
+      password: hashedPassword,
     };
     items.push(newitem);
     serialize(this.jsonDbPath, items);
@@ -100,13 +106,14 @@ class Users {
 
   /**
    * Update a item in the DB and return the updated item
-   * @param {number} id - id of the item to be updated
+   * @param {number} idValue - id of the item to be updated
    * @param {object} body - it contains all the data to be updated
+   * @param {number} idKey - key (or name) of the attribute to be used as id (id by default)
    * @returns {object} the updated item or undefined if the update operation failed
    */
-  updateOne(id, body) {
+  updateOne(idValue, body, idKey = "id") {
     const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.id == id);
+    const foundIndex = items.findIndex((item) => item[idKey] == idValue);
     if (foundIndex < 0) return;
     // create a new object based on the existing item - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
@@ -119,18 +126,20 @@ class Users {
     return updateditem;
   }
 
-  /**
+ /**
    * Authenticate a user and generate a token if the user credentials are OK
    * @param {*} username
    * @param {*} password
-   * @returns the authenticatedUser ({username:..., token:....}) or undefined if the user could not
+   * @returns {Promise} Promise reprensents the authenticatedUser ({username:..., token:....}) or undefined if the user could not
    * be authenticated
    */
 
-  login(username, password) {
+  async login(username, password) {
     const userFound = this.getOneByUsername(username);
     if (!userFound) return;
-    if (userFound.password !== password) return;
+    // checked hash of passwords
+    const match = await bcrypt.compare(password, userFound.password);
+    if (!match) return;
 
     const authenticatedUser = {
       username: username,

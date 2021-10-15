@@ -36,13 +36,13 @@ Authorization: {{manager.response.body.token}}
 }
 
 
-### Add another film
+### Add another film (with potential XSS attack)
 POST http://localhost:3000/films/
 Content-Type: application/json
 Authorization: {{manager.response.body.token}}
 
 {
-    "title":"Star Wars: Episode 2",
+    "title":"Star Wars: Episode 2=<image src='#' onerror='alert('You have been hacked!')'>",
     "duration": "1",
     "budget": "11",
     "link":"findIt.com"

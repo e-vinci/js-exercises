@@ -5,6 +5,7 @@ var logger = require("morgan");
 
 var filmsRouter = require("./routes/films");
 var authsRouter = require("./routes/auths");
+var usersRouter = require("./routes/users");
 
 var app = express();
 
@@ -16,5 +17,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/films", filmsRouter);
 app.use("/auths", authsRouter);
+app.use("/users", usersRouter);
 
 module.exports = app;

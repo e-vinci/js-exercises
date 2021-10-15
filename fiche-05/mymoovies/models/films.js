@@ -1,4 +1,4 @@
-"use strict";
+var escape = require("escape-html");
 const { parse, serialize } = require("../utils/json");
 
 const jsonDbPath = __dirname + "/../data/films.json";
@@ -59,8 +59,16 @@ class Films {
     // add new resource
     const newResource = {
       id: this.getNextId(),
-      ...body, // shallow copy with the spread operator
+      //...body, // shallow copy with the spread operator
     };
+    // escape HTML chars only for props that are of type "string"
+    for (const key in body) {
+      if (Object.hasOwnProperty.call(body, key)) {
+        const element = body[key];
+        if (typeof element === "string") newResource[key] = escape(element);
+        else newResource[key] = element;
+      }
+    }
 
     collection.push(newResource);
     serialize(this.jsonDbPath, collection);
@@ -92,10 +100,14 @@ class Films {
     const collection = parse(this.jsonDbPath, this.collection);
     const foundIndex = collection.findIndex((item) => item.id == id);
     if (foundIndex < 0) return;
-    // create a new object based on the existing resource - prior to modification -
-    // and the properties requested to be updated (those in the body of the request)
-    // use of the spread operator to create a shallow copy and repl
-    const updatedResource = { ...collection[foundIndex], ...body };
+    // Escape all dangerous potential new chars
+    const updatedResource = { ...collection[foundIndex] };
+    for (const key in body) {
+      if (Object.hasOwnProperty.call(body, key)) {
+        const element = body[key];
+        updatedResource[key] = escape(element);
+      }
+    }
     // replace the resource found at index : (or use splice)
     collection[foundIndex] = updatedResource;
 
