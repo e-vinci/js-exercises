@@ -7,7 +7,7 @@ package-lock.json
 # ignore the development environment variables (if any)
 .env
 # ignore all the JSON data files within data directories
-data/*.json
+**/data/*.json
 # ignore all dist directories files (and subdirectories) from .gitignore
 dist/*
 # ignore all existing solutions
@@ -17,4 +17,4 @@ fiche*
 !fiche-02
 !fiche-03
 !fiche-04
-
+!fiche-05
