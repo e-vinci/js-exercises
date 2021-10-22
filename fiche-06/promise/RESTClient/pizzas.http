@@ -1,0 +1,108 @@
+@baseUrl = http://localhost:3000
+
+######### NORMAL OPERATION  ###########
+
+### Login the default admin & define a request variable
+# @name admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+### get the admin token
+@adminToken = {{admin.response.body.token}}
+
+### Read all pizzas
+GET http://localhost:3000/pizzas
+
+### Read pizza identified by 2
+GET http://localhost:3000/pizzas/2
+
+
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+    "title":"Magic Purple",
+    "content":"JWT, Brocolis, Olives vertes, Basilic"
+}
+
+### Update the pizza identified by 2
+PUT http://localhost:3000/pizzas/2
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+    "title":"Magic Green 2"
+}
+
+### Delete pizza identified by 2
+DELETE http://localhost:3000/pizzas/2
+Authorization: {{adminToken}}
+
+
+### Add a pizza with dangerous chars
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+    "title":"Magic Purple XSS",
+    "content":"<img src=\"#\" onerror=\"alert('You have been hacked !')\">"
+}
+
+######### ERROR OPERATION  ###########
+
+### Read pizza which does not exists
+GET http://localhost:3000/pizzas/100
+
+### Create a pizza without JWT
+POST http://localhost:3000/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Update the pizza identified by 2 without JWT
+PUT http://localhost:3000/pizzas/2
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+
+### Delete pizza identified by 2 without JWT
+DELETE http://localhost:3000/pizzas/2
+
+
+### Create a pizza without info for a property
+POST http://localhost:3000/pizzas
+Content-Type: application/json
+
+{
+    "title":"",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Update for a pizza which does not exist
+PUT http://localhost:3000/pizzas/200
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+
+### Update for a pizza which does not provide any info for a property
+PUT http://localhost:3000/pizzas/1
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2",
+    "content":"1"
+}

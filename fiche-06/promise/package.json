@@ -1,0 +1,29 @@
+{
+  "name": "js-exercises-fiche-06-promise",
+  "description": "Promises",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "debug": "nodemon ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "data/*"
+    ]
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "escape-html": "^1.0.3",
+    "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1"
+  },
+  "author": {
+    "name": "e-baron"
+  },
+  "license": "CC-BY-SA-4.0"
+}
