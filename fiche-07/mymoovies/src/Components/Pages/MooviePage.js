@@ -1,6 +1,8 @@
-import Film from "../../Domain/Film";
 import FilmLibrary from "../../Domain/FilmLibrary";
 import { getSessionObject } from "../../utils/session";
+
+let callRef;
+let isBeingUpdated = false;
 
 const mooviePage = `
 <div class="text-center">
@@ -12,18 +14,23 @@ const mooviePage = `
 
 const myFilmLibrary = new FilmLibrary();
 
-const MooviePage = async () => {
-  const user = getSessionObject("user");
+const MooviePage = () => {
   const main = document.querySelector("main");
   main.innerHTML = mooviePage;
+  renderFilms();
+  callRef = setInterval(renderFilms, 5000); // re-render the films every 5s
+};
+
+async function renderFilms() {
+  const user = getSessionObject("user");
   const printMoovies = document.querySelector("#printMoovies");
+
   printMoovies.innerHTML = await myFilmLibrary.getHtmlTable(user);
   // add event listeners to deal with delete & save operations
   printMoovies.querySelectorAll(".delete").forEach((button) => {
     button.addEventListener("click", (e) => {
       const elementId = e.target.dataset.elementId;
       myFilmLibrary.deleteFilm(user, elementId);
-      MooviePage();
     });
   });
 
@@ -40,9 +47,18 @@ const MooviePage = async () => {
       };
       console.log("newFilmData:", newFilmData);
       myFilmLibrary.updateFilm(user, elementId, newFilmData);
-      MooviePage();
+      callRef = setInterval(renderFilms, 5000); // re-render the films every 5s
     });
   });
-};
+
+  // deal with update of td contents : cancel the re-renders of films
+  printMoovies.querySelectorAll("td").forEach((td)=>{
+    td.addEventListener("input", ()=>{
+      isBeingUpdated = true;
+      clearInterval(callRef);
+    })
+  })
+  
+}
 
 export default MooviePage;
