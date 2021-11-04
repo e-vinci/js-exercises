@@ -8,7 +8,7 @@ const Navbar = () => {
 
   if (!user) {
     navbar = `
-  <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+  <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">myMoovies</a>
           <button
@@ -43,7 +43,7 @@ const Navbar = () => {
   `;
   } else {
     navbar = `
-  <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+  <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">myMoovies</a>
           <button

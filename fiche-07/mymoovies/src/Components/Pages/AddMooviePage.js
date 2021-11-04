@@ -56,7 +56,7 @@ const myFilmLibrary = new FilmLibrary();
 
 const AddMooviePage = async () => {
   // Redirect user to login page if not authenticated
-  let user = getSessionObject("user");
+  const user = getSessionObject("user");
   if (!user) return Redirect("/login");
 
   const main = document.querySelector("main");
