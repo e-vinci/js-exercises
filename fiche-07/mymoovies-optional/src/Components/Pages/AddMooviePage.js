@@ -62,6 +62,7 @@ const AddMooviePage = async () => {
   const main = document.querySelector("main");
   main.innerHTML = addMooviePage;
   const myForm = document.querySelector("form");
+ 
 
   myForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -72,10 +73,9 @@ const AddMooviePage = async () => {
       link.value
     );
 
-    const filmAdded = await myFilmLibrary.addFilm(newFilm, user);
+    const filmAdded = await myFilmLibrary.addFilm(newFilm, user);    
     // clear form inputs
     myForm.reset();
-    Redirect("/moovies");
   });
 };
 
