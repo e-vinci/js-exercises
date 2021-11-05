@@ -26,6 +26,7 @@ const Router = () => {
   navbarWrapper.addEventListener("click", (e) => {
     // To get a data attribute through the dataset object, get the property by the part of the attribute name after data- (note that dashes are converted to camelCase).
     let uri = e.target.dataset.uri;
+    stopIntervalCalls(uri);
 
     if (uri) {
       e.preventDefault();
@@ -44,6 +45,17 @@ const Router = () => {
       }
     }
   });
+
+  function stopIntervalCalls(uri) {
+    console.log("callRef: ", window.callRef);
+    if (window.callRef && window.callRef !== -1) {
+      clearInterval(window.callRef);
+      if (window.myFilmLibrary & (uri !== "/moovies"))
+        window.myFilmLibrary.abortFetch();
+
+      window.callRef = -1;
+    }
+  }
 
   /* Route the right component when the page is loaded / refreshed */
   window.addEventListener("load", (e) => {

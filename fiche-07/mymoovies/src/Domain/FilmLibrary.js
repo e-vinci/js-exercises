@@ -1,4 +1,9 @@
 class FilmLibrary {
+  constructor() {
+    this.controller = new AbortController();
+    this.signal = this.controller.signal;
+  }
+
   async addFilm(film, user) {
     if (!film) return false;
     try {
@@ -6,6 +11,7 @@ class FilmLibrary {
       const options = {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         body: JSON.stringify(film), // body data type must match "Content-Type" header
+        signal: this.signal,
         headers: {
           "Content-Type": "application/json",
           Authorization: user.token,
@@ -30,7 +36,7 @@ class FilmLibrary {
 
   async getHtmlTable(user) {
     try {
-      const response = await fetch("/api/films"); // fetch return a promise => we wait for the response
+      const response = await fetch("/api/films", { signal: this.signal }); // fetch return a promise => we wait for the response
 
       if (!response.ok) {
         // status code was not 200, error status code
@@ -101,6 +107,7 @@ class FilmLibrary {
     try {
       const options = {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+        signal: this.signal,
         headers: {
           "Content-Type": "application/json",
           Authorization: user.token,
@@ -127,6 +134,7 @@ class FilmLibrary {
     try {
       const options = {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
+        signal: this.signal,
         body: JSON.stringify(newFilmData), // body data type must match "Content-Type" header
         headers: {
           "Content-Type": "application/json",
@@ -148,6 +156,11 @@ class FilmLibrary {
     } catch (err) {
       console.error("updatedFilm::error: ", err);
     }
+  }
+
+  abortFetch() {
+    console.log("abort any fetch calls.");
+    this.controller.abort();
   }
 }
 

@@ -1,8 +1,7 @@
 import FilmLibrary from "../../Domain/FilmLibrary";
 import { getSessionObject } from "../../utils/session";
 
-let callRef;
-let isBeingUpdated = false;
+window.callRef = -1; // Global variable that will be used in the router to stop interval calls
 
 const mooviePage = `
 <div class="text-center">
@@ -12,7 +11,7 @@ const mooviePage = `
   <div id="printMoovies"></div>  
 </div>`;
 
-const myFilmLibrary = new FilmLibrary();
+window.myFilmLibrary = new FilmLibrary();
 
 const MooviePage = () => {
   const main = document.querySelector("main");
@@ -25,12 +24,12 @@ async function renderFilms() {
   const user = getSessionObject("user");
   const printMoovies = document.querySelector("#printMoovies");
 
-  printMoovies.innerHTML = await myFilmLibrary.getHtmlTable(user);
+  printMoovies.innerHTML = await window.myFilmLibrary.getHtmlTable(user);
   // add event listeners to deal with delete & save operations
   printMoovies.querySelectorAll(".delete").forEach((button) => {
     button.addEventListener("click", (e) => {
       const elementId = e.target.dataset.elementId;
-      myFilmLibrary.deleteFilm(user, elementId);
+      window.myFilmLibrary.deleteFilm(user, elementId);
     });
   });
 
@@ -46,19 +45,17 @@ async function renderFilms() {
         budget: filmRow.children[3].innerHTML,
       };
       console.log("newFilmData:", newFilmData);
-      myFilmLibrary.updateFilm(user, elementId, newFilmData);
+      window.myFilmLibrary.updateFilm(user, elementId, newFilmData);
       callRef = setInterval(renderFilms, 5000); // re-render the films every 5s
     });
   });
 
   // deal with update of td contents : cancel the re-renders of films
-  printMoovies.querySelectorAll("td").forEach((td)=>{
-    td.addEventListener("input", ()=>{
-      isBeingUpdated = true;
+  printMoovies.querySelectorAll("td").forEach((td) => {
+    td.addEventListener("input", () => {
       clearInterval(callRef);
-    })
-  })
-  
+    });
+  });
 }
 
 export default MooviePage;
