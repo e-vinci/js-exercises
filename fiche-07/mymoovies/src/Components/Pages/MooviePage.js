@@ -1,7 +1,6 @@
+import Film from "../../Domain/Film";
 import FilmLibrary from "../../Domain/FilmLibrary";
 import { getSessionObject } from "../../utils/session";
-
-window.callRef = -1; // Global variable that will be used in the router to stop interval calls
 
 const mooviePage = `
 <div class="text-center">
@@ -11,25 +10,20 @@ const mooviePage = `
   <div id="printMoovies"></div>  
 </div>`;
 
-window.myFilmLibrary = new FilmLibrary();
+const myFilmLibrary = new FilmLibrary();
 
-const MooviePage = () => {
+const MooviePage = async () => {
+  const user = getSessionObject("user");
   const main = document.querySelector("main");
   main.innerHTML = mooviePage;
-  renderFilms();
-  callRef = setInterval(renderFilms, 5000); // re-render the films every 5s
-};
-
-async function renderFilms() {
-  const user = getSessionObject("user");
   const printMoovies = document.querySelector("#printMoovies");
-
-  printMoovies.innerHTML = await window.myFilmLibrary.getHtmlTable(user);
+  printMoovies.innerHTML = await myFilmLibrary.getHtmlTable(user);
   // add event listeners to deal with delete & save operations
   printMoovies.querySelectorAll(".delete").forEach((button) => {
     button.addEventListener("click", (e) => {
       const elementId = e.target.dataset.elementId;
-      window.myFilmLibrary.deleteFilm(user, elementId);
+      myFilmLibrary.deleteFilm(user, elementId);
+      MooviePage();
     });
   });
 
@@ -45,17 +39,10 @@ async function renderFilms() {
         budget: filmRow.children[3].innerHTML,
       };
       console.log("newFilmData:", newFilmData);
-      window.myFilmLibrary.updateFilm(user, elementId, newFilmData);
-      callRef = setInterval(renderFilms, 5000); // re-render the films every 5s
+      myFilmLibrary.updateFilm(user, elementId, newFilmData);
+      MooviePage();
     });
   });
-
-  // deal with update of td contents : cancel the re-renders of films
-  printMoovies.querySelectorAll("td").forEach((td) => {
-    td.addEventListener("input", () => {
-      clearInterval(callRef);
-    });
-  });
-}
+};
 
 export default MooviePage;
