@@ -58,7 +58,7 @@ class FilmLibrary {
       </td>`;
           // Deal with simple columns (duration & budget)
           htmlTable += `<td>${element.duration}</td>
-        <td>${element.duration}</td>
+        <td>${element.budget}</td>
       </tr>`;
         });
       }
