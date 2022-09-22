@@ -1,0 +1,45 @@
+.red,
+.orange,
+.green {
+  display: inline-block;
+  min-width: 50px;
+  min-height: 50px;
+  border: 1px solid black;
+}
+
+
+div.red-light div.red {
+    background-color: red;
+}
+
+div.red-light div.orange {
+  background-color: transparent;
+}
+
+div.red-light div.green {
+  background-color: transparent;
+}
+
+div.orange-light div.red {
+  background-color: transparent;
+}
+
+div.orange-light div.orange {
+background-color: orange;
+}
+
+div.orange-light div.green {
+background-color: transparent;
+}
+
+div.green-light div.red {
+  background-color: transparent;
+}
+
+div.green-light div.orange {
+background-color: transparent;
+}
+
+div.green-light div.green {
+background-color: green;
+}
