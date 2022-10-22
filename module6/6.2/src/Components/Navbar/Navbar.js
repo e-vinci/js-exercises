@@ -11,9 +11,9 @@ import { Navbar as BootstrapNavbar } from 'bootstrap';
 const Navbar = () => {
   const navbarWrapper = document.querySelector('#navbarWrapper');
   const navbar = `
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Animechan</a>
+          <a class="navbar-brand" href="#">myMovies</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -29,7 +29,13 @@ const Navbar = () => {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="#" data-uri="/">Home</a>
-              </li>                          
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/view-movies">View movies</a>
+              </li>   
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/add-movie">Add movie</a>
+              </li>                        
             </ul>
           </div>
         </div>

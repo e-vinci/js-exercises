@@ -1,27 +1,15 @@
-import grootImage from '../../img/groot.jpg';
-import stormtrooperImage from '../../img/stormtrooper.jpg';
-
-const homePage = `
-<div class="text-center">
-  <h3>Welcome to myMovies !</h3>
-
-  <p>Here you can find a selection of our favorite movies ; )</p>
-  <div class="pb-3">
-    <img class="img-thumbnail w-50" src="${grootImage}" alt="Groot" />
-  </div>
-
-  <div>
-    <img
-      class="img-thumbnail w-50"
-      src="${stormtrooperImage}"
-      alt="Stormtrooper"
-    />
-  </div>
-</div>`;
-
-const HomePage = () => {
+const HomePage = async () => {
+  document.title = 'Read from Animechan';
   const main = document.querySelector('main');
-  main.innerHTML = homePage;
+  const response = await fetch('https://animechan.vercel.app/api/random');
+  const quote = await response.json();
+  main.innerHTML = `
+  <div class="alert alert-info"> 
+    <h5>${quote.anime}</h5>
+    <h6>${quote.character}</h6>
+    <q>${quote.quote}</q>
+  </div>
+  `;
 };
 
 export default HomePage;

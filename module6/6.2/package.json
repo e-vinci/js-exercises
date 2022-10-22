@@ -1,7 +1,7 @@
 {
-  "name": "js-router-boilerplate",
+  "name": "exercise-6.1",
   "version": "1.0.0",
-  "description": "myJScourse's frontend boilerplate with a router",
+  "description": "Exercice 6.1 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy",
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
@@ -19,12 +19,12 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-webpack-plugin": "^3.2.0",
     "html-loader": "^2.1.2",
-    "html-webpack-plugin": "^5.5.0",
+    "html-webpack-plugin": "^5.3.1",
     "prettier-airbnb-config": "^1.0.0",
     "style-loader": "^2.0.0",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
