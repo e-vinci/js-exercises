@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Exercice 8.1 : Persistance de la session de myMovies dans le web storage",
   "scripts": {
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production",
+    "deploy": "npm run build && gh-pages -d dist",
+    "dev": "webpack --mode development && cp dist/index.html dist/404.html",
+    "build": "webpack --mode production && cp dist/index.html dist/404.html",
     "start": "webpack serve --mode development"
   },
   "author": "e-baron",
   "license": "CC-BY-SA-4.0",
+  "homepage": ".",
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
@@ -28,6 +30,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
-    "bootstrap": "^5.0.1"
+    "bootstrap": "^5.0.1",
+    "gh-pages": "^4.0.0"
   }
 }

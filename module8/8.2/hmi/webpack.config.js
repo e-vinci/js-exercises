@@ -1,6 +1,18 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const webpack = require('webpack');
+
+const DEVELOPMENT_API_BASE_URL = 'http://localhost:3000';
+const PRODUCTION_API_BASE_URL = 'https://my-movies-api.azurewebsites.net';
+const DEVELOPMENT_PATH_PREFIX = '/';
+const PRODUCTION_PATH_PREFIX = '/mymovies/';
+
+const buildMode = process.argv[process.argv.indexOf('--mode') + 1];
+const isProductionBuild = buildMode === 'production';
+
+const API_BASE_URL = isProductionBuild ? PRODUCTION_API_BASE_URL : DEVELOPMENT_API_BASE_URL;
+const PATH_PREFIX = isProductionBuild ? PRODUCTION_PATH_PREFIX : DEVELOPMENT_PATH_PREFIX;
 
 module.exports = {
   mode: 'none',
@@ -8,13 +20,19 @@ module.exports = {
   output: {
     path: `${__dirname}/dist`,
     filename: 'bundle.js',
-    publicPath: '/',
+    publicPath: PATH_PREFIX,
   },
   devtool: 'eval-source-map',
   devServer: {
     // contentBase: path.join(__dirname, 'dist'),
     static: {
       directory: path.join(__dirname, 'dist'),
+    },
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
     },
     port: 8080,
     // host: '0.0.0.0', // server to be accessible externally
@@ -82,7 +100,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      publicPath: PATH_PREFIX,
     }),
     new ESLintPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.BUILD_MODE': JSON.stringify(buildMode),
+      'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL),
+      'process.env.PATH_PREFIX': JSON.stringify(PATH_PREFIX),
+    }),
   ],
 };
