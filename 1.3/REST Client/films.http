@@ -1,0 +1,60 @@
+@baseUrl = http://localhost:3000
+
+### Read all films
+GET {{baseUrl}}/films
+
+### Read all films with minimum-duration of 140min
+GET {{baseUrl}}/films/?minimum-duration=140
+
+### Try to read films with wrong minimum-duration
+GET {{baseUrl}}/films/?minimum-duration=0
+
+### Create a film
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+    "title":"Star Wars: The Phantom Menace (Episode I)",
+    "duration": 136,
+    "budget": 115,
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+### Try to create a film with a parameter missing or empty string or string with whitespaces only
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+    "title":" ",
+    "duration": 136,
+    "budget": 115,
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+### Try to create a film with a wrong budget
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+    "title":"Star Wars: The Phantom Menace (Episode I)",
+    "duration": 136,
+    "budget": "115",
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+### Create another film
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+    "title":"Star Wars: Episode 2",
+    "duration": 1,
+    "budget": 11,
+    "link":"findIt.com"
+}
+
+### Read film with ID == 1
+GET {{baseUrl}}/films/1
+
+### Read film which does not exist
+GET {{baseUrl}}/films/500
