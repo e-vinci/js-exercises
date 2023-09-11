@@ -1,0 +1,60 @@
+@baseUrl = http://localhost:3000/texts
+
+### Read all texts
+GET {{baseUrl}}
+
+### Read all texts with specifi level
+GET {{baseUrl}}?level=easy
+
+### Try to read texts with wrong minimum-duration
+GET {{baseUrl}}?level=wronglevel
+
+### Create an existing text (request variable to get the response of API)
+# @name text
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "content":"what a wonderful text",
+    "level": "easy"
+}
+
+### Read text with ID from previous new text
+GET {{baseUrl}}/{{text.response.body.id}}
+
+### Read text which does not exist
+GET {{baseUrl}}/455322144
+
+### Try to create a text with a parameter missingPOST {{baseUrl}}
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "content":"what a wonderful text"
+}
+
+### Delete a text previously added
+DELETE {{baseUrl}}/{{text.response.body.id}}
+
+
+### Update a text
+PUT {{baseUrl}}/{{text.response.body.id}}
+Content-Type: application/json
+
+{
+    "content":"new content for this text",
+    "level": "easy"
+}
+
+### Try to update text with missing param
+PUT {{baseUrl}}/{{text.response.body.id}}
+Content-Type: application/json
+
+{
+    "content":"oh i am missing the level..."
+}
+
+
+
+
+
