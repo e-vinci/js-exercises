@@ -1,7 +1,7 @@
 {
-  "name": "exercise-2.5",
+  "name": "exercise-2.10",
   "version": "1.0.0",
-  "description": "Exercice 2.5 : module bundler",
+  "description": "🍬 Exercice 2.10 : Génération dynamique d'une table sur base d'un formulaire",
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",

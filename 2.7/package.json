@@ -1,7 +1,7 @@
 {
-  "name": "exercise-2.5",
+  "name": "project-2.7",
   "version": "1.0.0",
-  "description": "Exercice 2.5 : module bundler",
+  "description": "Projet 2.7 : UI esthétique",
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
