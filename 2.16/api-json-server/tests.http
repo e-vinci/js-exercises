@@ -1,0 +1,12 @@
+### Query
+GET http://[::1]:3000/queries
+
+### solution given in : https://github.com/Huachao/vscode-restclient/issues/523
+### address on which services are listenning to : netstat -aon
+#### Query
+PATCH http://[::1]:3000/queries/8
+Content-Type: application/json
+
+{
+    "status" : "requested"
+}

@@ -27,13 +27,14 @@ const films = [
 
 // Read all the films, filtered by minimum-duration if the query param exists
 router.get('/', (req, res) => {
-  const minimumFilmDuration = req?.query
+  const minimumFilmDuration = req?.query?.['minimum-duration']
     ? Number(req.query['minimum-duration'])
     : undefined;
+
+  if (minimumFilmDuration === undefined) return res.json(films);
+
   if (typeof minimumFilmDuration !== 'number' || minimumFilmDuration <= 0)
     return res.json('Wrong minimum duration'); // bad practise (will be improved in exercise 1.5)
-
-  if (!minimumFilmDuration) return res.json(films);
 
   const filmsReachingMinimumDuration = films.filter(
     (film) => film.duration >= minimumFilmDuration
