@@ -19,7 +19,7 @@ function getHtmlMovieTableAsString(movies) {
     return '<p class="p-5">No movies yet : (</p>';
   }
 
-  let htmlMovieTable = `<div class="table-responsive p-5">
+  const htmlMovieTable = `<div class="table-responsive p-5">
   <table class="table">
 <thead>
   <tr>
@@ -30,12 +30,12 @@ function getHtmlMovieTableAsString(movies) {
     <th scope="col" colspan="2">Operations</th>  
   </tr>
 </thead>
-<tbody>`;
-
-  movies.forEach((element) => {
-    htmlMovieTable += `
+<tbody>  
+  ${movies
+    .map(
+      (element) => `
     <tr>
-    <td class="fw-bold text-info" contenteditable="true">${element.title}</td>
+      <td class="fw-bold text-info" contenteditable="true">${element.title}</td>
       <td class="text-info text-break" contenteditable="true">
         <a class="text-info" href="${element.link}" target="_blank""> ${element.link}</a>
       </td>
@@ -48,10 +48,10 @@ function getHtmlMovieTableAsString(movies) {
         <button type="button" class="btn btn-info update" data-element-id="${element.id}">Save</button>
       </td>
     </tr>
-    `;
-  });
-
-  htmlMovieTable += '</tbody></table>';
+    `,
+    )
+    .join('')}
+  </tbody></table>`;
 
   return htmlMovieTable;
 }
