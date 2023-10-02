@@ -17,6 +17,7 @@ const stats = {};
 app.use((req, res, next) => {
   const currentOperation = `${req.method} ${req.path}`;
   const currentOperationCounter = stats[currentOperation];
+  const myStats= {'GET /':1, 'GET /films': 3}
   if (currentOperationCounter === undefined) stats[currentOperation] = 0;
   stats[currentOperation] += 1;
   const statsMessage = `Request counter : \n${Object.keys(stats)
