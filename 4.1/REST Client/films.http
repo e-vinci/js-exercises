@@ -1,0 +1,145 @@
+@baseUrl = http://localhost:3000
+
+### Read all films
+GET {{baseUrl}}/films
+
+### Read all films with minimum-duration of 140min
+GET {{baseUrl}}/films/?minimum-duration=140
+
+### Try to read films with wrong minimum-duration
+GET {{baseUrl}}/films/?minimum-duration=0
+
+### Read film with ID == 1
+GET {{baseUrl}}/films/1
+
+### Read film which does not exist
+GET {{baseUrl}}/films/500
+
+### Create a film with guest token
+#### Login the guest user and get the response in a request variable named 'guest'
+# @name guest
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"guest",
+    "password":"guest"
+}
+
+#### Create a film with the guest token
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Star Wars: The Phantom Menace (Episode I)",
+    "duration": 136,
+    "budget": 115,
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+### Try to create a film without a token
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+    "title":"Star Wars: The Phantom Menace (Episode I)",
+    "duration": 136,
+    "budget": 115,
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+### Try to create a film with a parameter missing or empty string or string with whitespaces only
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":" ",
+    "duration": 136,
+    "budget": 115,
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+### Try to create a film with a wrong budget
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Star Wars: The Phantom Menace (Episode I)",
+    "duration": 136,
+    "budget": "115",
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
+}
+
+#### Create another film with the guest token
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Once upon a time...",
+    "duration": 345,
+    "budget": 1,
+    "link":"https://onceuponatime.unfinity"
+}
+
+### Delete the film with ID == 2
+DELETE {{baseUrl}}/films/2
+Authorization: {{guest.response.body.token}}
+
+
+### Update film with ID == 2
+PATCH {{baseUrl}}/films/2
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Star Wars: Episode II – Attack of the Clones",
+    "budget": 115
+}
+
+### Try to update film with ID == 2 with empty param
+PATCH {{baseUrl}}/films/2
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":""
+}
+
+### Update film with ID == 2
+PUT {{baseUrl}}/films/2
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Star Wars: Episode II – Attack of the Clones",
+    "duration": 142,
+    "budget": 115,
+    "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_II_%E2%80%93_Attack_of_the_Clones"
+}
+
+### Try to update film with ID == 2 when missing one param
+PUT {{baseUrl}}/films/2
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Star Wars: Episode II – Attack of the Clones",
+    "duration": 142,
+    "budget": 115
+}
+
+### Create new film with ID == 666
+PUT {{baseUrl}}/films/666
+Content-Type: application/json
+Authorization: {{guest.response.body.token}}
+
+{
+    "title":"Attack of the beast",
+    "duration": 666,
+    "budget": 666,
+    "link":"https://666"
+}
