@@ -40,7 +40,9 @@ const deleteOneMovie = async (id) => {
 
     const options = {
       method: 'DELETE',
-      Authorization: authenticatedUser.token,
+      headers: {
+        Authorization: authenticatedUser.token,
+      },
     };
 
     const response = await fetch(`${process.env.API_BASE_URL}/films/${id}`, options);
