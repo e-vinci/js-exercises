@@ -37,7 +37,7 @@ const addOneMovie = async (movie) => {
 const deleteOneMovie = async (id) => {
   try {
     const authenticatedUser = getAuthenticatedUser();
-
+    
     const options = {
       method: 'DELETE',
       headers: {
